@@ -60,6 +60,19 @@ const viewAllEmployees = () => {
               });
 };
 
+const addDepartment = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'deptName',
+            message: 'Enter the department name:'
+        }
+    ]).then((answers) => {
+        db.query(`INSERT INTO department(name)
+                  VALUES ('${answers.deptName}')`);
+    })
+}
+
 inquirer.prompt(question).then((response) => {
     switch(response.task){
         case 'View All Departments':
@@ -70,6 +83,9 @@ inquirer.prompt(question).then((response) => {
             break;
         case 'View All Employees':
             viewAllEmployees();
+            break;
+        case 'Add Department':
+            addDepartment();
             break;
     }
 }).catch((err) => {
