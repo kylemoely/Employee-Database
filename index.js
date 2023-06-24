@@ -69,9 +69,65 @@ const addDepartment = () => {
         }
     ]).then((answers) => {
         db.query(`INSERT INTO department(name)
-                  VALUES ('${answers.deptName}')`);
+                  VALUES ('${answers.deptName}')`, (err, res) => {
+                    if(err){
+                        console.log(err);
+                    } else{
+                        console.log('Department added.');
+                    };
+                  });
     })
-}
+};
+
+const addRole = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'roleTitle',
+            message: `Enter the role's title:`
+        },
+        {
+            type: 'number',
+            name: 'roleSalary',
+            message: `Enter the role's salary:`
+        },
+        {
+            type: 'input',
+            name: 'roleDept',
+            message: `Enter the role's department:`
+        }
+    ]).then((answers) => {
+        const insertRole = (title, salary, deptId) => {
+            db.query(`INSERT INTO role(title, salary, department_id)
+                      VALUES ('${title}', ${salary}, ${deptId})`, (err, res) => {
+                        if(err){
+                            console.log(err);
+                        } else{
+                            console.log('Role added.');
+                        }
+                      });
+        };
+
+        db.query(`SELECT id FROM department
+                  WHERE name = '${answers.roleDept}'`, (err, res) => {
+                    if(err){
+                        console.log(err);
+                    } else{
+                        if(res.length===0){
+                            db.query(`INSERT INTO department(name)
+                                      VALUES ('${answers.roleDept}')`, (err2, res2) => {
+                                      if(err2){
+                                        console.log(err2);
+                                      } else{
+                                        insertRole(answers.roleTitle, answers.roleSalary, res2.insertId);
+                                      }});
+                        } else{
+                            insertRole(answers.roleTitle, answers.roleSalary, res[0].id);
+                        };
+                    };
+                  });
+    });
+};
 
 inquirer.prompt(question).then((response) => {
     switch(response.task){
@@ -86,6 +142,9 @@ inquirer.prompt(question).then((response) => {
             break;
         case 'Add Department':
             addDepartment();
+            break;
+        case 'Add Role':
+            addRole();
             break;
     }
 }).catch((err) => {
