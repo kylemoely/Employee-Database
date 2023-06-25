@@ -69,7 +69,7 @@ const addDepartment = () => {
         }
     ]).then((answers) => {
         db.query(`INSERT INTO department(name)
-                  VALUES ('${answers.deptName}')`, (err, res) => {
+                  VALUES ('${answers.deptName}')`, (err,) => {
                     if(err){
                         console.log(err);
                     } else{
@@ -92,42 +92,55 @@ const addRole = () => {
             message: `Enter the role's salary:`
         },
         {
-            type: 'input',
+            type: 'number',
             name: 'roleDept',
-            message: `Enter the role's department:`
+            message: `Enter the role's department id:`
         }
     ]).then((answers) => {
-        const insertRole = (title, salary, deptId) => {
             db.query(`INSERT INTO role(title, salary, department_id)
-                      VALUES ('${title}', ${salary}, ${deptId})`, (err, res) => {
+                      VALUES ('${answers.roleTitle}', ${answers.roleSalary}, ${answers.roleDept})`, (err) => {
                         if(err){
                             console.log(err);
                         } else{
                             console.log('Role added.');
                         }
                       });
-        };
-
-        db.query(`SELECT id FROM department
-                  WHERE name = '${answers.roleDept}'`, (err, res) => {
-                    if(err){
-                        console.log(err);
-                    } else{
-                        if(res.length===0){
-                            db.query(`INSERT INTO department(name)
-                                      VALUES ('${answers.roleDept}')`, (err2, res2) => {
-                                      if(err2){
-                                        console.log(err2);
-                                      } else{
-                                        insertRole(answers.roleTitle, answers.roleSalary, res2.insertId);
-                                      }});
-                        } else{
-                            insertRole(answers.roleTitle, answers.roleSalary, res[0].id);
-                        };
-                    };
-                  });
     });
 };
+
+const addEmployee = () => {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'empFirstName',
+            message: `Enter the employee's first name:`
+        },
+        {
+            type: 'input',
+            name: 'empLastName',
+            message: `Enter the employee's last name:`
+        },
+        {
+            type: 'number',
+            name: 'empRole',
+            message: `Enter the employee's role id:`
+        },
+        {
+            type: 'number',
+            name: 'empManager',
+            message: `Enter the employee's manager id:`
+        }
+    ]).then((answers) => {
+            db.query(`INSERT INTO employee(first_name, last_name, role_id, manager_id)
+                      VALUES ('${answers.empFirstName}', '${answers.empLastName}', ${answers.empRole}, ${answers.empManager})`, (err) => {
+                        if(err){
+                            console.log(err)
+                        } else{
+                            console.log('Employee added.')
+                        }
+                      })
+    })
+}
 
 inquirer.prompt(question).then((response) => {
     switch(response.task){
@@ -145,6 +158,9 @@ inquirer.prompt(question).then((response) => {
             break;
         case 'Add Role':
             addRole();
+            break;
+        case 'Add Employee':
+            addEmployee();
             break;
     }
 }).catch((err) => {
