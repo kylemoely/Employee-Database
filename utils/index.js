@@ -6,7 +6,8 @@ const viewAllDepartments = require('./viewAllDepartments');
 const viewAllEmployees = require('./viewAllEmployees');
 const viewAllRoles = require('./viewAllRoles');
 const viewEmployeesByManager = require('./viewEmployeesByManager');
+const viewEmployeesByDepartment = require('./viewEmployeesByDepartment');
 
 module.exports = {
-    addDepartment, addEmployee, addRole, updateEmployee, viewAllDepartments, viewAllEmployees, viewAllRoles, viewEmployeesByManager
+    addDepartment, addEmployee, addRole, updateEmployee, viewAllDepartments, viewAllEmployees, viewAllRoles, viewEmployeesByManager, viewEmployeesByDepartment
 };
