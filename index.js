@@ -158,7 +158,8 @@ const updateEmployee = () => {
                 `Employee's role`,
                 `Employee's manager`,
                 `Employee's first name`,
-                `Employee's last name`
+                `Employee's last name`,
+                `Employee's manager`
             ]
         }
     ]).then((answers) => {
@@ -210,6 +211,15 @@ const updateEmployee = () => {
                         message: `Enter the employee's new last name:`
                     }
                 ]).then((answers2) => updateQuery(answers.empId, 'last_name', `'${answers2.empLast}'`));
+                break;
+            case `Employee's manager`:
+                inquirer.prompt([
+                    {
+                        type: 'number',
+                        name: 'empManId',
+                        message: `Enter the employee's new manager's id:`
+                    }
+                ]).then((answers2) => updateQuery(answers.empId, 'manager_id', answers2.empLast));
                 break;
         }
     })
