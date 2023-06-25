@@ -1,6 +1,6 @@
 const inquirer = require('inquirer');
 require('dotenv').config();
-const { addDepartment, addEmployee, addRole, updateEmployee, viewAllDepartments, viewAllEmployees, viewAllRoles, viewEmployeesByManager, viewEmployeesByDepartment } = require('./utils');
+const { addDepartment, addEmployee, addRole, updateEmployee, viewAllDepartments, viewAllEmployees, viewAllRoles, viewEmployeesByManager, viewEmployeesByDepartment, deleteDepartment } = require('./utils');
 
 const question = {
     type: 'list',
@@ -15,7 +15,8 @@ const question = {
         'View All Departments',
         'Add Department',
         'View Employees By Manager',
-        'View Employees By Department'
+        'View Employees By Department',
+        'Delete Department'
     ]
 };
 
@@ -45,8 +46,13 @@ inquirer.prompt(question)
             break;
         case 'View Employees By Manager':
             viewEmployeesByManager();
+            break;
         case 'View Employees By Department':
             viewEmployeesByDepartment();
+            break;
+        case 'Delete Department':
+            deleteDepartment();
+            break;
     }
 })
 .catch((err) => {
