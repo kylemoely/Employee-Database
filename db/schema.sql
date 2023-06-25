@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS role(
     salary DECIMAL,
     department_id INT,
     FOREIGN KEY (department_id) REFERENCES department(id)
-        ON DELETE CASCADE
+    ON DELETE SET NULL
 );
 
 CREATE TABLE IF NOT EXISTS employee(
@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS employee(
     role_id INT,
     manager_id INT,
     FOREIGN KEY (role_id) REFERENCES role(id)
-    ON DELETE SET NULL
+    ON DELETE SET NULL,
     FOREIGN KEY (manager_id) REFERENCES employee(id)
+    ON DELETE SET NULL
 );
