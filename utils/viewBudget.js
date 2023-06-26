@@ -37,7 +37,7 @@ const viewBudget =() => {
     })
     setTimeout(function(){
         console.log(`Department's total salary is ${total}`);
-    }, 1000);
+    }, 500);
 }
 
 module.exports = viewBudget;
